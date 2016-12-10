@@ -33,5 +33,5 @@ if __name__=='__main__':
   gradient = [.1,.3,.5]
   total_count = count("../ace.csv")
 
-  for g in gradient: 
-	induceGaps(g, total_count, "resprate")
+  for g in gradient:
+    induceGaps(g, total_count, "resprate")
