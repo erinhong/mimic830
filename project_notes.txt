@@ -1,0 +1,35 @@
+12/08/2016 
+
+Goal: 
+Create main table containing chartevents from mimic containing: 
+- at most 3 rows per patient where each row is one of heart rate, rr, and blood pressure 
+- add new column labeling which id it is 
+
+COPY (SELECT * FROM ace) TO '/Users/ErinHong/Documents/ace.csv' DELIMITER ',' CSV HEADER;
+
+
+12/09/2016 
+Goal: 
+
+• Induce missing values in blood pressure now 
+• perform mean substitution -> predict error -> 
+
+------------------------------------------------------------------------------------------------------
+											Documentation 
+------------------------------------------------------------------------------------------------------
+
+Ways to Induce Missing Data: 
+
+• Randomly 
+	- 10%, 30%, 50% 
+
+• Data Sources
+	- Joins 
+	- No Join 
+
+• Models 
+	√ Linear Regression 
+	- Mean Substitution 
+	- Last Observation Carried Forward
+	- Expectation Maximization or Maximum Liklihood 
+	
