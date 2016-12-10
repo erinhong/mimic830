@@ -23,7 +23,8 @@ def induceGaps(gapPercentages,totalRows,cursor):
 			rowIdsToRemove.add(random.randint(0,totalRows))
 		strifiedRowsIds = "[" + ",".join(str(ID) for ID in rowIdsToRemove) + "]"
 		cursor.execute('SELECT a.subject_id,a.heartrate,a.bloodpressure,a.resprate FROM ( '+
-			'SELECT *,row_number() over(ORDER BY ace.subject_id) as rid from ace) AS a') 
+			'SELECT *,row_number() over(ORDER BY ace.subject_id) as rid from ace) AS a' +
+			'WHERE a.rid ') 
 
 
 
