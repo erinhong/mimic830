@@ -21,14 +21,18 @@ library("rgl")
 #        xlab="Heartrate (bpm)", ylab="Blood Pressure (mmHg)", zlab="Respiratory Rate (insp/min)")
 
 
+#bp was selected to be gap induced 
+# plot3d(rr,hr,bp,col=c('blue','red','forestgreen'), xlab="RR (insp/min)",ylab="HR (bpm)",zlab="BP (mmHg)")
+# fit <- lm(bp ~ rr + hr)
+# coefs <- coef(fit)
+# planes3d(coefs["rr"], coefs["hr"], -1, coefs["(Intercept)"], alpha=0.5)
 
-plot3d(rr,hr,bp,col=c('blue','red','forestgreen'), xlab="RR (insp/min)",ylab="HR (bpm)",zlab="BP (mmHg)")
-fit <- lm(bp ~ rr + hr)
+
+#rr was selected to be gap induced
+plot3d(bp,hr,rr,col=c('blue','red','forestgreen'), xlab="BP (mmHg)",ylab="HR (bpm)",zlab="RR (insp/min)", zlim=c(0,65))
+fit <- lm(rr ~ bp + hr)
 coefs <- coef(fit)
-planes3d(coefs["rr"], coefs["hr"], -1, coefs["(Intercept)"], alpha=0.5)
+planes3d(coefs["bp"], coefs["hr"], -1, coefs["(Intercept)"], alpha=0.5)
 
-
-
-
-
+#xlim=c(0,200),ylim=c(0,200),zlim=c(0,200)
 
