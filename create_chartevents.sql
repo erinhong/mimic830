@@ -43,6 +43,7 @@ ON a.SUBJECT_ID = uniquePatients.SUBJECT_ID;
 
 ################################################
 
+CREATE VIEW ace AS
 SELECT ace1.subject_id,
 	ace1.val heartrate,
 	ace2.val bloodpressure,
