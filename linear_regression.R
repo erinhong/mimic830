@@ -1,7 +1,11 @@
-dat = read.csv("Documents/ace.csv", header = TRUE)
-
-fit <- lm(heartrate ~ bloodpressure + resprate, data=dat)
+dat = read.csv("Documents/ERIN\ HONG/IHTFP4/6_830/mimic830/dead_ace_train.csv", header = TRUE)
+fit <- lm(formula = resprate ~heartrate + bloodpressure, data = dat)
 summary(fit)
+
+
+dat_j = read.csv("Documents/ERIN\ HONG/IHTFP4/6_830/mimic830/dead_ace_joined_train.csv", header = TRUE)
+fit_j <- lm(formula = resprate ~heartrate + bloodpressure + age + factor(gender), data = dat_j)
+summary(fit_j)
 
 plot(dat$bloodpressure, dat$heartrate, col = 'blue', main="Scatter Plot of 'altered_chartevents' Table",
      xlab="Measurements", ylab="Heartrate (bpm)")

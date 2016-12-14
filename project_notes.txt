@@ -14,9 +14,43 @@ Goal:
 • Induce missing values in blood pressure now 
 • perform mean substitution -> predict error -> 
 
+
+12/10/2016 
+TO DO: 
+- we didn't set out test and training data, do that
+- re-run equations for graphs and lm for data 
+- then re run lm predictors
+- join other tables for more features
+- then write other models
+- repeat 
+
+12/12/2016 
+- 
+
 ------------------------------------------------------------------------------------------------------
 											Documentation 
 ------------------------------------------------------------------------------------------------------
+
+STEPS: 
+- Process ace.csv file that contains the set of unique patients with all 3 values 
+- Split train and test data .7, .3 respectively
+- Induce gaps on test 
+- Run R studio script on R Studio to get linear regression line 
+- Run lm_predict with that line 
+- get Accuracy from running lm_predict on how well lm predicts gaps 
+
+- created another view to get dead_ace_ids... 
+- then joined with existing ace to get the correct csvs in order to be able to join on patients and get age vals.
+- when we wanted to create view 'dead_patient_ace_joined' we filtered out patients who were greated than age 89 by using '<300'
+- now we want to perform the same lm, first partition into train & test, then induce gaps, then run lm 
+
+
+
+RESOURCES: 
+Paper we found 'but boys have larger lungs than girls '
+• https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2391086/#R6
+• https://www.ncbi.nlm.nih.gov/pmc/articles/PMC459376/
+
 
 Ways to Induce Missing Data: 
 
@@ -42,6 +76,8 @@ STEPS:
 
 2. Induce gaps on RR in 3 different gradients (10%, 30%, 50%) 
 	- this is in order to confirm that the less information we have, we perform worse and vice versa 
+
+3. 
 	
 
 

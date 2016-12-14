@@ -53,6 +53,63 @@ JOIN alt_chartevents ace2 ON ace1.subject_id = ace2.subject_id AND ace2.label = 
 JOIN alt_chartevents ace3 ON ace1.subject_id = ace3.subject_id AND ace3.label = 'resprate'
 WHERE ace1.label = 'heartrate';
 
+################################################
+############## 12/12/2016 #######################
+################################################
+
+
+COPY (SELECT * FROM dead_patient_ace) to '/Users/ErinHong/Documents/dead_ace.csv';
+
+CREATE VIEW dead_patients_ids AS 
+SELECT *   
+FROM mimiciii.patients p
+WHERE p.dod is not null
+AND ROUND( (cast(p.dod as date) - cast(p.dob as date)) / 365.242,2) < 300; 
+
+# then run pre_chartevents 
+# then run unique_patients 
+# then run ace
+
+CREATE VIEW dead_patient_ace AS 
+SELECT a.* 
+FROM ace a
+INNER JOIN dead_patients_ids dp 
+ON a.subject_id = dp.subject_id; 
+
+################################################
+
+CREATE VIEW dead_patient_ace_joined AS 
+SELECT dpa.*,
+	ROUND( (cast(dpi.dod as date) - cast(dpi.dob as date)) / 365.242,2) AS age, 
+	dpi.gender 
+FROM dead_patient_ace dpa 
+INNER JOIN dead_patients_ids dpi 
+ON dpa.subject_id = dpi.subject_id
+AND ROUND( (cast(dpi.dod as date) - cast(dpi.dob as date)) / 365.242,2) < 300; 
+
+COPY (SELECT * FROM dead_patient_ace) to '/Users/ErinHong/Documents/dead_ace.csv' DELIMITER ',' CSV HEADER;
+COPY (SELECT * FROM dead_patient_ace_joined) to '/Users/ErinHong/Documents/dead_ace_joined.csv' DELIMITER ',' CSV HEADER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
