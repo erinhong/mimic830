@@ -24,17 +24,64 @@ TO DO:
 - then write other models
 - repeat 
 
-12/12/2016 
-- 
+12/14/2016 
+RESULTS
+
+No Join 
+rr = 0.011643bp + 0.145658hr + 5.602958
+
+Call:
+lm(formula = rr ~ bp + hr)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-36.713  -5.708  -0.319   4.350  57.869 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 5.602958   0.434759  12.888  < 2e-16 ***
+bp          0.011643   0.003778   3.082  0.00209 ** 
+hr          0.145658   0.005201  28.005  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.83 on 1847 degrees of freedom
+Multiple R-squared:  0.3294,	Adjusted R-squared:  0.3287 
+F-statistic: 453.6 on 2 and 1847 DF,  p-value: < 2.2e-16
+
+---------------------------------------------------
+
+Join
+Call:
+lm(formula = resprate ~ heartrate + bloodpressure + age + factor(gender), 
+    data = dat_j)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-37.313  -5.478  -0.333   4.194  58.145 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     3.242482   1.017738   3.186  0.00147 ** 
+heartrate       0.146254   0.005204  28.102  < 2e-16 ***
+bloodpressure   0.011184   0.003779   2.960  0.00312 ** 
+age             0.029881   0.012798   2.335  0.01966 *  
+factor(gender)M 0.516674   0.369022   1.400  0.16165    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.819 on 1845 degrees of freedom
+Multiple R-squared:  0.332,	Adjusted R-squared:  0.3305 
+F-statistic: 229.2 on 4 and 1845 DF,  p-value: < 2.2e-16
 
 ------------------------------------------------------------------------------------------------------
 											Documentation 
 ------------------------------------------------------------------------------------------------------
 
 STEPS: 
-- Process ace.csv file that contains the set of unique patients with all 3 values 
+- Preprocess data so dead_ace.csv and dead_ace_joined.csv contain the set of unique patients with all 3 values -> ended up with 2643 patients
 - Split train and test data .7, .3 respectively
-- Induce gaps on test 
+- Induce gaps on test by running gap_inducer.py
 - Run R studio script on R Studio to get linear regression line 
 - Run lm_predict with that line 
 - get Accuracy from running lm_predict on how well lm predicts gaps 

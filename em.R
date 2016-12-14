@@ -18,14 +18,15 @@ bpList <- dat_gaps$bloodpressure
 hrList <- dat_gaps$heartrate
 rrList <- dat_gaps$resprate
 for (i in 1:length(rrList)){
-  print (i)
   if (is.na(rrList[i])){
-    guessVal = 
+    guessVal = hr*hrList[i] + bp*bpList[i] + intercept 
+    print (guessVal)
     guesses <- c(guesses,guessVal)
   }else{
     guesses <- c(guesses,rrList[i])
   }
 }
+print (guesses)
 
 
 
