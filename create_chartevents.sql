@@ -1,5 +1,13 @@
-CREATE VIEW pre_chartevents AS 
-SELECT subject_id, itemid, 
+# data from all patients with all bp, hr, rr readings listed in different rows -> all patients with most recent bp, hr, rr readings listed in diff rows
+
+CREATE VIEW mostrecent_chartevents AS
+WITH most_recent AS (
+SELECT subject_id, itemid, MAX(charttime) as charttime
+FROM mimiciii.chartevents c 
+GROUP BY subject_id, itemid
+ORDER BY subject_id) 
+
+SELECT c.subject_id, c.itemid, 
 	case 
 		when c.itemid = 220052
 			then 'bloodpressure'
@@ -10,7 +18,7 @@ SELECT subject_id, itemid,
 		else null end 
 	as label, 
 
-	avg(c.valuenum) as val,
+	c.valuenum as val,
 
 	case 
 		when c.itemid = 220052
@@ -20,28 +28,38 @@ SELECT subject_id, itemid,
 		when c.itemid = 220210 
 			then 'insp/min' 
 		else null end 
-	as valueuom
-	
-FROM mimiciii.chartevents c 
-GROUP BY subject_id,itemid
-ORDER BY subject_id;
+	as valueuom,
+	c.charttime
+
+FROM mimiciii.chartevents c
+INNER JOIN most_recent m 
+ON m.charttime = c.charttime 
+AND m.subject_id = c.subject_id
+AND m.itemid = c.itemid
+
+GROUP BY c.subject_id,c.itemid,c.valuenum,c.charttime
+ORDER BY c.subject_id;
 
 ################################################
+# all patients with most recent bp, hr, rr readings listed in diff rows -> only patients with all 3 readings
 
 CREATE VIEW uniquePatients AS 
 SELECT subject_id FROM (
 	SELECT subject_id, count(subject_id) as numRows
-	FROM pre_chartevents
+	FROM mostrecent_chartevents
 	GROUP BY subject_id
 ) AS counter 
 WHERE numRows =3; 
 
+# only patients with all 3 readings -> gets the readings and other info from those patients
 CREATE VIEW alt_chartevents AS
-SELECT a.* FROM pre_chartevents a 
+SELECT a.* FROM mostrecent_chartevents a 
 INNER JOIN uniquePatients
 ON a.SUBJECT_ID = uniquePatients.SUBJECT_ID;
 
 ################################################
+
+# gets the readings and other info from those patients -> the 3 separate readings turn into 1 row for each patient
 
 CREATE VIEW ace AS
 SELECT ace1.subject_id,
@@ -57,8 +75,8 @@ WHERE ace1.label = 'heartrate';
 ############## 12/12/2016 #######################
 ################################################
 
-
-COPY (SELECT * FROM dead_patient_ace) to '/Users/ErinHong/Documents/dead_ace.csv';
+# get all dead patients whose age and gender we are given
+# patients over 89 years old have age fixed at 300 so we don't want these patients
 
 CREATE VIEW dead_patients_ids AS 
 SELECT *   
@@ -66,18 +84,20 @@ FROM mimiciii.patients p
 WHERE p.dod is not null
 AND ROUND( (cast(p.dod as date) - cast(p.dob as date)) / 365.242,2) < 300; 
 
-# then run pre_chartevents 
-# then run unique_patients 
-# then run ace
+# get all dead patients who has 3 readings as done above
 
 CREATE VIEW dead_patient_ace AS 
 SELECT a.* 
 FROM ace a
 INNER JOIN dead_patients_ids dp 
-ON a.subject_id = dp.subject_id; 
+ON a.subject_id = dp.subject_id;
+
+# export to be used as final table for NO join experiment
+COPY (SELECT * FROM dead_patient_ace) to '/Users/ErinHong/Documents/dead_ace.csv' DELIMITER ',' CSV HEADER;
 
 ################################################
 
+# get all dead patients who has 3 readings as done above and joined on age and gender
 CREATE VIEW dead_patient_ace_joined AS 
 SELECT dpa.*,
 	ROUND( (cast(dpi.dod as date) - cast(dpi.dob as date)) / 365.242,2) AS age, 
@@ -87,7 +107,7 @@ INNER JOIN dead_patients_ids dpi
 ON dpa.subject_id = dpi.subject_id
 AND ROUND( (cast(dpi.dod as date) - cast(dpi.dob as date)) / 365.242,2) < 300; 
 
-COPY (SELECT * FROM dead_patient_ace) to '/Users/ErinHong/Documents/dead_ace.csv' DELIMITER ',' CSV HEADER;
+# export to be used as final table for join experiment
 COPY (SELECT * FROM dead_patient_ace_joined) to '/Users/ErinHong/Documents/dead_ace_joined.csv' DELIMITER ',' CSV HEADER;
 
 
