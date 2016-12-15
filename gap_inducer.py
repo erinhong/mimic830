@@ -12,12 +12,12 @@ def count(fileName):
 
 
 def induceGaps(percentage_to_delete, total_rows, col_to_delete):
-  with open("dead_ace_joined_test_10.csv", 'rU') as f:
+  with open("dead_ace_joined_test_05.csv", 'rU') as f:
     reader = csv.DictReader(f,delimiter = ",")
     headers = reader.fieldnames
     headers.append('removed')
 
-    fileName = 'induced_dead_ace_joined_test_10_'+str(percentage_to_delete)+'.csv'
+    fileName = 'induced_dead_ace_joined_test_05_'+str(percentage_to_delete)+'.csv'
     with open(fileName, 'w') as nf:
       writer = csv.DictWriter(nf, headers)
 
@@ -38,7 +38,7 @@ def induceGaps(percentage_to_delete, total_rows, col_to_delete):
 
 if __name__=='__main__':
   gradient = [.1,.3,.5]
-  total_count = count("dead_ace_joined_test_10.csv")
+  total_count = count("dead_ace_joined_test_05.csv")
 
 
   for g in gradient: 

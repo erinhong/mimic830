@@ -116,7 +116,7 @@ Ways to Induce Missing Data:
 	
 STEPS: 
 1. Performed linear regression on all possible relationships 
-	- Inducing gaps on RR will be best because it had the highest p-value of .0004001 and Multiple R-squared: 0.08
+	- Inducing gaps on RR will be best because it had the lowest p-value of .0004001 and Multiple R-squared: 0.08
 	- The F ratio is the ratio of two mean square values. If the null hypothesis is true, you expect F to have a value close to 1.0 most of the time. A large F ratio means that the variation among group means is more than you'd expect to see by chance.
 		- F-statistic: 8.172 on 2 ? 
 	- 181 Degrees of Freedom 
